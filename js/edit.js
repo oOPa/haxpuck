@@ -1691,7 +1691,7 @@ function load_tile(name){
         bg_patterns[name] = ctx.createPattern(tile, 'repeat');
         queue_render();
     };
-    tile.src = name+'tile.png';
+    tile.src = "res/"+name+'tile.png';
 }
 
 function color_to_style(color, def){
