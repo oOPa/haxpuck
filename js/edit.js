@@ -606,24 +606,19 @@ function render(st){
 
     var transform;
     transform = function(shape, draw){ draw(); };
-    
     var ctx = canvas.getContext('2d');
-
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-
     ctx.clearRect(0, 0, canvas_rect[2] - canvas_rect[0], canvas_rect[3] - canvas_rect[1]);
-
     ctx.translate(-canvas_rect[0], -canvas_rect[1]);
-    
-    //draw stadium border ??
-    if(settings.preview){
+    //draw lines? 
+  
         ctx.beginPath();
         ctx.moveTo(-st.width, -st.height);
         ctx.lineTo(st.width, -st.height);
         ctx.lineTo(st.width, st.height);
         ctx.lineTo(-st.width, st.height);
         ctx.clip();
-    }
+    
 
     //background
     renderbg(st, ctx);
@@ -644,11 +639,7 @@ function render(st){
             ctx.beginPath();
             var radius = disc.radius !== undefined ? disc.radius : haxball.default_disc_radius;
             ctx.arc(disc.pos[0], disc.pos[1], radius, 0, Math.PI*2, true);
-            if(selected(disc) && !settings.preview){
-                ctx.lineWidth = 5;
-                ctx.strokeStyle = colors.selected;
-                ctx.stroke();
-            }
+
             ctx.strokeStyle = 'rgb(0,0,0)';
             ctx.lineWidth = 2;
             ctx.fillStyle = color_to_style(disc.color, haxball.disc_color);
@@ -659,34 +650,32 @@ function render(st){
 
     $.each(debug_render, function(i, f){ f(ctx); });
 
-    if(settings.preview){
-        // TODO: use exact colors and sizes
 
-        // draw puck
-        ctx.beginPath();
-        ctx.arc(0, 0, 10, 0, Math.PI*2, true);
-        ctx.fillStyle = 'rgb(255,255,255)';
-        ctx.strokeStyle = 'rgb(0,0,0)';
-        ctx.lineWidth = 2;
-        ctx.fill();
-        ctx.stroke();
-        
-        // draw red
-        ctx.beginPath();
-        ctx.arc(-st.spawnDistance, 0, 15, 0, Math.PI*2, true);
-        ctx.fillStyle = 'rgb(240,0,0)';
-        ctx.lineWidth = 3;
-        ctx.fill();
-        ctx.stroke();
+    // draw puck
+    ctx.beginPath();
+    ctx.arc(0, 0, 10, 0, Math.PI*2, true);
+    ctx.fillStyle = 'rgb(255,255,255)';
+    ctx.strokeStyle = 'rgb(0,0,0)';
+    ctx.lineWidth = 2;
+    ctx.fill();
+    ctx.stroke();
+    
+    // draw red
+    ctx.beginPath();
+    ctx.arc(-st.spawnDistance, 0, 15, 0, Math.PI*2, true);
+    ctx.fillStyle = 'rgb(240,0,0)';
+    ctx.lineWidth = 3;
+    ctx.fill();
+    ctx.stroke();
 
-        // draw blue
-        ctx.beginPath();
-        ctx.arc(st.spawnDistance, 0, 15, 0, Math.PI*2, true);
-        ctx.fillStyle = 'rgb(0,0,248)';
-        ctx.fill();
-        ctx.stroke();
+    // draw blue
+    ctx.beginPath();
+    ctx.arc(st.spawnDistance, 0, 15, 0, Math.PI*2, true);
+    ctx.fillStyle = 'rgb(0,0,248)';
+    ctx.fill();
+    ctx.stroke();
 
-    }
+    
 
 
 }
@@ -701,25 +690,9 @@ function render_segment_arc(ctx, segment, arc){
     }
 
     if(segment.vis !== false){
-        if(selected(segment) && !settings.preview){
-            ctx.lineWidth = 5;
-            ctx.strokeStyle = colors.selected;
-            ctx.stroke();
-        }
+
         ctx.lineWidth = 3;
         ctx.strokeStyle = color_to_style(segment.color, haxball.segment_color);
-        ctx.stroke();
-    }else if(!settings.preview){
-        if(selected(segment)){
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = colors.selected;
-            ctx.stroke();
-        }
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = colors.invisible_thick;
-        ctx.stroke();
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = colors.invisible_thin;
         ctx.stroke();
     }
 }
