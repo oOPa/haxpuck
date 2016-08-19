@@ -48,11 +48,9 @@ constants.Player = {
 };
 
     var fixDef = new b2FixtureDef();
-    //fixDef.density = hx.constants.Player.DENSITY;
     fixDef.friction = constants.Player.FRICTION;
     fixDef.restitution = constants.Player.RESTITUTION;
     fixDef.shape = new b2CircleShape(constants.Player.RADIUS);
-    //fixDef.shape = new b2CircleShape(30*hx.constants.Player.RADIUS);
 	bodyDef.position.x = -stadium.spawnDistance;
     bodyDef.position.y = 0;
     bodyDef.linearDamping = constants.Player.LD;
@@ -255,10 +253,3 @@ Vector.prototype.rotate = function(theta) {
     this.y = xtemp * Math.sin(theta) + this.y * Math.cos(theta);
     return this;
 };
-
-// constructor
-//Vector.prototype.constructor = Vector;
-//PIXI.Point.prototype.constructor = PIXI.Point;
-
-/** apply it **/
-//PIXI.Point = Vector;
