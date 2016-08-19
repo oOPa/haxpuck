@@ -6,6 +6,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 
 <script type="text/javascript" src="js/edit.js"></script>
+<script type="text/javascript" src="js/render.js"></script>
 <link type="text/css" href="css/edit.css" rel="stylesheet" />
 
 <script type="text/javascript">
@@ -50,9 +51,8 @@ if (!(top === self)){
 		<td style="width:100%"><input id="input_name" value=""></input></td>
 		<td><button id="button_save" class="valid-user">Save</button></td>
 		<td><button id="button_download" class="valid-user">Download</button></td>
-		<td><button id="button_import">Text&nbsp;Mode</button></td>
-		<td><button id="button_properties">Stadium&nbsp;Properties</button></td>
-		<td><button id="button_help">Help</button></td>
+		<td><button id="button_properties">(Settings)Stadium&nbsp;Properties</button></td>
+		<td><button id="button_help">About</button></td>
 	    </tr></table>
 	</td></tr><tr><td style="height:100%">
 	    <div id="canvas_div_placeholder"></div>
@@ -111,43 +111,11 @@ if (!(top === self)){
   </tr>
   <tr id="bottomboxes">
     <td id="leftbox" valign="top">
-      <table><tr>
-      <td id="left_tabs">
-	<button id="button_tab_properties" class="active">Properties</button>
-	<button id="button_tab_edit">Edit</button>
-	<button id="button_tab_advanced">Tools</button>
-      </td><td>
-            <div id="tab_parent">
-              <div id="tab_properties"> </div>
-              <div id="tab_edit" class="hidden">
-	        <button id="button_undo">Undo</button>
-	        <button id="button_redo">Redo</button>
-	        <button id="button_delete">Delete</button>
-	        <button id="button_select_all">Select All</button>
-	        <button id="button_select_none">Select None</button>
-	        <button id="button_inverse_selection">Invert Selection</button>
-	        <button id="button_cut">Cut</button>
-	        <button id="button_copy">Copy</button>
-	        <button id="button_paste">Paste</button>
-	        <button id="button_duplicate">Duplicate</button>
-              </div>
-              <div id="tab_advanced" class="hidden">
-                <button id="button_mirror_mode">Automatic Mirror</button>
-	        <button id="pref_preview">Preview</button>
-              </div>
-	    </div>
-      </td></tr></table>
+  
     </td>
     <td id="rightbox" valign="top">
       <pre id="mousepos" class="left"></pre>
       <button id="button_tool_select">Select</button>
-      <button id="button_tool_rotate">Rotate</button>
-      <button id="button_tool_scale">Scale</button>
-      <button id="button_tool_segment">Segment</button>
-      <button id="button_tool_vertex">Vertex</button>
-      <button id="button_tool_disc">Disc</button>
-      <button id="button_tool_goal">Goal</button>
-      <button id="button_tool_plane">Plane</button>
     </td>
   </tr>
 </table>
