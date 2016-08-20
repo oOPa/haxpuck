@@ -1,10 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>HaxPuck.com</title>
+<title>HaxPuck clone</title>
+
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/fh-3.1.2/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/fh-3.1.2/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
+
+
 <script type="text/javascript" src="shared/box2dweb-2.1.a.3.min.js"></script>
+<script type="text/javascript" src="shared/pixi.min.js"></script>
 
 <script type="text/javascript" src="js/edit.js"></script>
 <script type="text/javascript" src="js/input.js"></script>
@@ -12,42 +21,32 @@
 <script type="text/javascript" src="js/player.js"></script>
 <script type="text/javascript" src="js/physics.js"></script>
 <script type="text/javascript" src="js/render.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/server.js"></script>
+<script type="text/javascript" src="js/client.js"></script>
+
 <link type="text/css" href="css/edit.css" rel="stylesheet" />
 
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-11375946-2']);
-  _gaq.push(['_setDomainName', 'haxpuck.com']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
+
 <link rel="shortcut icon" href="favicon.ico"/>
 </head><body class="logged-out">
 <div id="header">
 <ul id="menu" class="menu">
   <li><a class="active">HaxPuck.com</a>
   <li><a href="http://haxball.com/" target="_blank">Play HaxBall</a>
-  <li><a id="stadium_editor_link" href="#">Stadium Editor</a>
+  <li><a id="stadium_editor_link" href="http://www.haxpuck.com">Stadium Editor</a>
   <li><a id="library_link" href="#">Library</a>
-  <li><a href="https://plus.google.com/109286404864146997610/posts" target="_blank">News</a>
-  <li><a href="https://github.com/atnnn/haxpuck/issues" target="_blank">Report a Bug</a>
+  <li><a href="https://github.com/oOPa/haxpuck/issues" target="_blank">Report a Bug</a>
+
+	<!-- login 
   <li><a href="#" id="login_link" class="anonymous">Login</a>
-  <li><a href="#" id="register_link" class="anonymous">Register</a>
-  <li><a href="#" id="logout_link" class="valid-user">Logout</a>
-<script>
-if (!(top === self)){
-  document.write('<li><a href="http://www.haxpuck.com/" target="_blank">Full Screen</a>');
-}
-</script>
+	-->
+
 </ul>
-<a href="http://haxpuck.com/football4africa" target="_blank" style="position: fixed; right: 0px; top: 0px">
-  <img src="res/f4f.png">
-</a>
+
 </div>
+
+
 <table id="table" cellspacing="7px">
   <tr>
     <td colspan="2" id="topbox" valign="top">
@@ -63,6 +62,75 @@ if (!(top === self)){
 	    <div id="canvas_div_placeholder"></div>
 	    <div id="canvas_div">
 	      <canvas id="canvas"></canvas>
+				<!-- rooms list -->
+				<div id="rooms" class="hidden">
+					<div class="rooms_menu">
+
+						<button id="btn_create_room">Create Room</button><br/>
+					</div>
+<table id="room_table" class="">
+    <thead>
+        <tr>
+            <th>Room name</th>
+            <th>Players</th>
+            <th>Password Protected</th>
+            <th>Distance</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+				</div>
+				<!-- lobby-->
+
+
+
+
+
+
+<div id="lobby" class="hidden">
+<!-- red team -->
+<div class="prop_group">
+	<div class="prop_group_title">Red team</div>
+
+	<ul id="red_lobby_list" class="connectedSortable">
+		<li class="ui-state-default player">Player1 red</li>
+		<li class="ui-state-default player">Player1 red</li>
+		<li class="ui-state-default player">Player1 red</li>
+		<li class="ui-state-default player">Player1 red</li>
+
+	</ul>
+</div>
+
+<!-- spectators -->
+<div class="prop_group">
+	<div class="prop_group_title">Spectators</div>
+
+	<ul id="spec_lobby_list" class="connectedSortable">
+		<li class="ui-state-default player">Player1 spec</li>
+	</ul>
+</div>
+
+
+<!-- blue team -->
+<div class="prop_group">
+	<div class="prop_group_title">Blue team</div>
+
+	<ul id="blue_lobby_list" class="connectedSortable">
+		<li class="ui-state-default player">Player1 blue</li>
+	</ul>
+</div>
+</div>
+
+
+
+
+
+
+
+				<!-- -->
 	      <div id="stadium_properties" class="hidden">
                 <div class="prop_group">
                   <div class="prop_group_title">General</div>
@@ -116,11 +184,12 @@ if (!(top === self)){
   </tr>
   <tr id="bottomboxes">
     <td id="leftbox" valign="top">
-  
+			<div id="chat_log" class="form" style="width:100%">HELLO THIS IS THE CHAT</div>	<br/>
+			<input type="text" id="chat_textbox" class="form" style="width:100%"></input>	
     </td>
     <td id="rightbox" valign="top">
       <pre id="mousepos" class="left"></pre>
-      <button id="button_tool_select">Select</button>
+      <button id="chat_send">Send</button>
     </td>
   </tr>
 </table>
@@ -157,12 +226,12 @@ if (!(top === self)){
   </div>
   <div id="boxlogin" class="hidden">
     <table class="center-content"><tr><td>
-          <label class="form">Username:</label><input class="form"type="text" id="login_name"><br>
-          <label class="form">Password:</label><input class="form"type="password" id="login_password"><br>
-          <button id="button_login_login">Login</button>
-          <button id="button_login_close">Cancel</button>
+					<p class="">Enter nickname to get started</p><br>	
+          <label class="form">Nickname:</label><input class="form"type="text" id="login_name"><br>
+          <button id="button_login_login">Play!</button>
     </td></tr></table>
   </div>
+
   <div id="boxregister" class="hidden">
     <table class="center-content"><tr><td>
           <label class="form">Username:</label><input type="text" id="register_name" class="form"><br>
@@ -172,6 +241,16 @@ if (!(top === self)){
           <button id="button_register_close">Cancel</button>
     </td></tr></table>
   </div>
+
+  <div id="boxmake_room" class="hidden">
+    <table class="center-content"><tr><td>
+          <label class="form">Room name:</label><input type="text" id="register_name" class="form"><br>
+
+          <button id="button_register_register">Create</button>
+          <button id="button_register_close">Cancel</button>
+    </td></tr></table>
+  </div>
+
   <div id="boximport" class="hidden">
     <table style="height: 100%; width: 100%">
       <tr><td style="height:100%"><textarea id="textarea_import"></textarea></td></tr>

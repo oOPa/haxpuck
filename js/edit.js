@@ -216,8 +216,6 @@ var min = Math.min;
 var cos = Math.cos;
 var sin = Math.sin;
 
-
-
 //==== Initilisation
 
 $(function(){
@@ -274,9 +272,7 @@ $(function(){
         return false;
     });
 
-    $('#button_login_login').click(function(){
-        login();
-    });
+
 
     $('#button_login_close').click(function(){
         hide_box();
@@ -293,10 +289,7 @@ $(function(){
     load_tile('grass');
     load_tile('hockey');
 
-    $(window).bind('beforeunload', function(){
-        if(!can_leave)
-            return "Close the stadium editor?";
-    });
+
 
     reset_selection();
 
@@ -374,6 +367,8 @@ $(function(){
 
     resize();
     $(window).resize(resize);
+
+     //show_box('login');
 });
 
 // Replace the current stadium with a new stadium
@@ -622,7 +617,7 @@ function render_segment_arc(ctx, segment, arc){
 
 function renderbg(st, ctx){
     var bg = st.bg;
-    ctx.save();
+    //ctx.save();
 
     if(bg.type == 'grass' || bg.type == 'hockey'){
 

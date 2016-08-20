@@ -1,14 +1,14 @@
-var Player = function (world,stadium,isOnRedteam) {
+var Ball = function (world,stadium) {
     this.renderable = true;
     this.keys = [false,false,false,false];
     this.physics = new PhysicsPlayer(world,stadium);
     this.x = 0;
     this.y = 0;
-    this.color = isOnRedteam ? "rgb(240,0,0)" : "rgb(0,0,248)";
+    this.color = 0xFFFFFF;
     this.radius = 15;
     this.lineWidth = 3;
 }
-Player.prototype.draw = function(ctx)
+Ball.prototype.draw = function(ctx)
 {
     ctx.beginPath();
     //ctx.arc(-st.spawnDistance, 0, 15, 0, Math.PI*2, true);
@@ -19,13 +19,13 @@ Player.prototype.draw = function(ctx)
     ctx.stroke();
 
 }
-Player.prototype.moveTo = function(x,y)
+Ball.prototype.moveTo = function(x,y)
 {
     this.body.SetPosition(new b2Vec2(x,y));
     this.update();
 }
 
-Player.prototype.update = function()
+Ball.prototype.update = function()
 {
     var v = this.physics.update(this.keys);
     this.x = v.x;

@@ -59,10 +59,10 @@ constants.Player = {
     this.body = world.CreateBody(bodyDef);
     this.fix = this.body.CreateFixture(fixDef);
 }
-update ()
+update (keys)
 {
 		var vec = new Vector(0, 0);
-        this.keys.forEach(function (key, i) {
+        keys.forEach(function (key, i) {
         if (key) {
                 var vec2 = new Vec(i * -90,200);
                 vec.add(vec2.vec);
@@ -73,7 +73,9 @@ update ()
         {
             this.body.ApplyForce(vec, this.body.GetWorldCenter());
         }
-        
+       
+           return this.body.GetPosition();
+           
 }
 
 }

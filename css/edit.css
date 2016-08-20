@@ -385,3 +385,39 @@ body.logged-out .valid-user {
     padding-top: 10px;
     float: left;
 }
+
+#room_table td{
+    color:red;
+}
+player {
+    display: block;
+    float: left;
+    height: 22px;
+    line-height: 19px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #604E44;
+    background-color: #604E44;
+    clear: left;
+    margin: 2px 0;
+    padding: 0 10px;
+}
+.connectedSortable
+{
+     min-height: 100px;
+}
+#chat_log
+{
+    height: 24px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #303030;
+    width: 300px;
+    border: 1px solid #604E44;
+    color: white;
+
+    font-size: 25px;
+    overflow-y: scroll;
+    overflow-wrap:break-word;
+    overflow-x: auto;
+}
