@@ -1,18 +1,45 @@
+var inputUp = function(player,e)
+{
+   // console.log("up");
+    if (e.keyCode > 36 && e.keyCode < 41) {
+        player.keys[Directions[e.keyCode]] = false;
+    }       
+}
+var inputDown = function(player,e)
+{
+      //  console.log("down");
+    if (e.keyCode > 36 && e.keyCode < 41) {
+        player.keys[Directions[e.keyCode]] = true;
+    }    
+}
 var gameKeyDown = function (e)
 {
-    console.log(e);
-    if (e.keyCode > 36 && e.keyCode < 41) {
-        this.keys[Directions[e.keyCode]] = true;
-    }
-    if(e.keyCode == 27)
+    inputDown(this,e);
+}    
+var gameKeyUp = function (e)
+{
+    inputUp(this,e);
+
+} 
+var gameKeyDownClient = function (client,e)
+{
+    inputDown(this,e);
+    if(client.isOpen())
     {
-        toggleLobby();
+        client.sendKeys();
     }
 }    
-var gameKeyUp = function (e,player)
+var gameKeyUpClient = function (client,e)
 {
-    this.keys[Directions[e.keyCode]] = false;
+    inputUp(this,e);
+    if(client.isOpen())
+    {
+        client.sendKeys();
+    }
 } 
+
+
+
 Directions = {
     39:0,
     40:3,

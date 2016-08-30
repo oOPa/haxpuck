@@ -4,6 +4,33 @@ $(document).ready(function(){
 loadGameUI();
 createLobby();
 
+
+$("#button_login").click(function()
+{
+    console.log($("#login_name").val());
+    //login();
+    hide_box();
+    show_rooms();
+
+    //show_lobby();
+    
+});
+
+$("#btn_create_room").click(function(){
+    show_box('make_room');
+});
+
+$("#button_make_room_close").click(function(){
+    hide_box();
+});
+
+$("#button_room_register").click(function(){
+    hide_box();
+    $("#rooms").hide();
+    show_lobby();
+    makeRoom();
+});
+
     $("#chat_send").click(function(){
         $("#chat_log").append("NEW LIEN <br>");
     });
@@ -47,14 +74,68 @@ function show_lobby()
     $("#lobby").show();
 }
 
-$('#button_login_login').click(function(){
-    //login();
-    hide_box();
-    //show_rooms();
-    show_lobby();
-    
-});
+
+
 var loadGameUI = function()
 {
-    show_rooms();
+    //this.client= new Client();
+    this.host = new Host();
+ show_box('login');
+      // show_lobby();
+          //show_box('make_room');
+}
+var joinRoom = function(host)
+{
+    this.client = new Client();
+    client.joinRoom(host,function(){
+        client.onrequestplayers = function(){
+                //ready to load 
+                showGameUI(client);
+                client.onrequestplayers = 0
+            }
+        client.requestPlayers();
+    });
+
+}
+
+var showGameUI = function(client)
+{
+    var render = new Renderer()
+    window.renderer = render;
+    render.setStadium(stadium);
+   // render.start();
+
+
+
+
+
+   // hide_box();
+   // $(canvas).show();
+    //$('#bottomboxes').show();
+}
+function attachPlayers()
+{
+    var player = client.me = new Player();
+    window.player = player;
+        //add action listeners
+    document.addEventListener('keydown',gameKeyDown.bind(player));
+    document.addEventListener('keyup',gameKeyUp.bind(player));
+            
+    /** add players */
+    var keys = Object.keys(client.players)
+    for(var i in keys)
+    {
+        console.log(client.players[keys[i]])
+        renderer.addPlayer(client.players[keys[i]]);
+    }
+    renderer.addPlayer(client.me);
+}
+
+var makeRoom = function()
+{
+    var renderer = new Renderer();
+    var host = new Host();
+    renderer.setStadium(stadium);
+    Game.Input.addController(host.getPlayer());
+    renderer.start();
 }

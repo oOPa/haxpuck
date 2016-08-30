@@ -4,14 +4,16 @@ var Renderer = function()
     this.previousTime = 0;
     this.frameId = 0;
     this.dt = 0;
-    this.gameObjects = [];
+    this.players = [];
     this.ctx = 0;
+    this.frameNumber = 0;
     this.physics = new Physics();
+    this.state = [];
+    this.queue = new PlaybackQueue();
 }
-/**  */
-Renderer.prototype.resetPhysics = function ()
+Renderer.prototype.getState = function()
 {
-
+    return this.state;
 }
 Renderer.prototype.start = function()
 {
@@ -45,38 +47,86 @@ Renderer.prototype.draw = function(){
     {
         this.dt = time - this.previousTime;
         this.previousTime = time;
+        self.frameNumber++;
         /** update physics */
         self.physics.update();
         /** update game objects */
-        self.updateObjects();
+        self.updatePlayers();
         /** draw stadium */
         self.drawStadium();
         /** draw game objects */
-        self.drawObjects();
+        self.drawPlayers();
         self.frameId = requestAnimationFrame(animate);
     }   
 }
-Renderer.prototype.updateObjects = function()
+Renderer.prototype.updatePlayers = function()
 {
-    for(var i in this.gameObjects)
+    let temp = new GameState();
+    temp.setFrameNumber(this.frameNumber);
+    this.state = temp;
+    
+    var keys = Object.keys(this.players);
+    for(var i in keys)
     {
-        var obj = this.gameObjects[i];
-        obj.update();
+        var obj = this.players[keys[i]];
+        obj.update(this.ctx);
+        temp.addGameObject(obj,[obj.x,obj.y])
     }
+    this.state = temp;
 }
-Renderer.prototype.drawObjects = function()
+Renderer.prototype.drawPlayers = function()
 {
-    for(var i in this.gameObjects)
+    var keys = Object.keys(this.players);
+    for(var i in keys)
     {
-        var obj = this.gameObjects[i];
+        var obj = this.players[keys[i]];
         obj.draw(this.ctx);
     }
 }
-Renderer.prototype.createPlayer = function()
+Renderer.prototype.addPlayer = function(player)
 {
-    var player = new Player(this.physics.world,this.stadium);
-    this.gameObjects.push(player);
-    return player;
+    if(player)
+    {
+        var index = this.players[player.id];
+        if (!index){
+            //debugger;
+            player.createPhysics(this.physics);
+            player.moveTo(20,20);
+            this.players[player.id] = player;
+        }
+    }
+}
+Renderer.prototype.removePlayer = function(player)
+{
+    var index = this.players.indexOf(player);
+    if (index > -1){
+        //delete player completely
+        this.players.splice(index, 1);
+    }
+}
+Renderer.prototype.resetPlayers = function(player)
+{
+
+}
+Renderer.prototype.applyGameState = function(state_array)
+{
+    var state = GameState.fromArray(state_array);
+    var it = state.getIterator();
+    while(it.hasNext())
+    {
+    	//console.log(it.getNext())
+        let gameObject = it.getNext();
+        //console.log(gameObject);
+        let player = this.players[gameObject.id];
+        if(player)
+        {
+            player.moveTo(gameObject.data[0],gameObject.data[1])
+        }
+        else
+        {
+            console.log("not found id "+gameObject);
+        }
+    }
 }
 Renderer.prototype.drawStadium = function (){
     var ctx =  this.ctx;
@@ -139,23 +189,118 @@ Renderer.prototype.drawStadium = function (){
 
 }
 
-var createGame = function()
+var GameState = function()
 {
-    var game = new Renderer();
-    game.setStadium(stadium);
-    createLocalPlayer(game);
-    //start rendering
-    game.start();
+    this.data = new Array();
+    this.index = 0;
 }
-var createLocalPlayer = function(game)
+GameState.prototype.setFrameNumber = function(frameNumber)
 {
-    var player = game.createPlayer();
-    //add action listeners
-    document.addEventListener('keydown',gameKeyDown.bind(player));
-    document.addEventListener('keyup',gameKeyUp.bind(player));
+    this.data[0] = frameNumber;
 }
-var createNetPlayer = function()
+GameState.prototype.getFrameNumber = function()
 {
-    var player = game.createPlayer();
+    return this.data[0];
 }
+GameState.prototype.addGameObject = function(gameObject,data)
+{
+    this.data.push(gameObject.id,data);
+}
+GameState.prototype.get = function(index)
+{
+    return {id : this.data[2*index+1], data : this.data[2*(index+1)]};
+}
+GameState.prototype.size = function(index)
+{
+    return (this.data.length - 1) / 2;
+}
+GameState.prototype.getData = function()
+{
+    return this.data;
+}
+GameState.prototype.getIterator = function()
+{
+    var index = 0;
+    var len = this.size();
+	var it = {
+		getNext : () => {
+			return this.get(index++);
+		},
+		hasNext : function (){
+			return index < len;
+		},
+		reset : function()
+		{
+			index = 0;
+		}
+	}
+    return it;
+}
+GameState.fromArray = function(data)
+{
+    var state = new GameState();
+    state.data = data;
+    return state;
+}
+
+
+var PlaybackQueue = function(max,arr)
+{
+    this.len = 20;
+    this.arr = new Array();
+    this.access_pointer = -1;
+    this.insert_pointer = -1;
+}
+PlaybackQueue.prototype.add = function (frame)
+{
+	this.arr[this.getNextInsertPointer()] = frame;
+}
+PlaybackQueue.prototype.hasNext = function()
+{
+    return (this.access_pointer != this.insert_pointer);
+}
+PlaybackQueue.prototype.getNext = function()
+{
+	return this.arr[ this.access_pointer = ((this.access_pointer+1)%this.len)];
+}
+PlaybackQueue.prototype.getNextInsertPointer = function()
+{
+	return (this.insert_pointer = (this.insert_pointer +1)%this.len);
+}
+PlaybackQueue.prototype.getQueue = function ()
+{
+	return this.arr;
+}
+PlaybackQueue.prototype.copyTo = function (queue)
+{
+    while(this.hasNext())
+    {
+        queue.add(this.getNext());
+    }
+}
+class RendererClient extends Renderer
+{
+    updatePlayers()
+    {
+        let temp = new GameState();
+        temp.setFrameNumber(this.frameNumber);
+        this.state = temp;
+        var keys = Object.keys(this.players);
+        for(var i in keys)
+        {
+            var obj = this.players[keys[i]];
+            obj.interpolate(this.ctx);
+            temp.addGameObject(obj,[obj.x,obj.y])
+        }
+        this.state = temp;
+    }
+}
+
+
+
+
+
+
+
+
 

@@ -6,14 +6,16 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/fh-3.1.2/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.css"/>
- 
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/fh-3.1.2/r-2.1.0/rr-1.1.2/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
 
 
 <script type="text/javascript" src="shared/box2dweb-2.1.a.3.min.js"></script>
-<script type="text/javascript" src="shared/pixi.min.js"></script>
+<script type="text/javascript" src="shared/peer.min.js"></script>
+<script type="text/javascript" src="shared/hashtable.js"></script>
+<script type="text/javascript" src="shared/EventEmitter.min.js"></script>
+
+<script type="text/javascript" src="js/constants.js"></script>
 
 <script type="text/javascript" src="js/edit.js"></script>
 <script type="text/javascript" src="js/input.js"></script>
@@ -24,6 +26,7 @@
 <script type="text/javascript" src="js/ui.js"></script>
 <script type="text/javascript" src="js/server.js"></script>
 <script type="text/javascript" src="js/client.js"></script>
+<script type="text/javascript" src="js/game.js"></script>
 
 <link type="text/css" href="css/edit.css" rel="stylesheet" />
 
@@ -184,7 +187,7 @@
   </tr>
   <tr id="bottomboxes">
     <td id="leftbox" valign="top">
-			<div id="chat_log" class="form" style="width:100%">HELLO THIS IS THE CHAT</div>	<br/>
+			<div id="chat_log" class="form" style="width:100%"></div>	<br/>
 			<input type="text" id="chat_textbox" class="form" style="width:100%"></input>	
     </td>
     <td id="rightbox" valign="top">
@@ -228,7 +231,7 @@
     <table class="center-content"><tr><td>
 					<p class="">Enter nickname to get started</p><br>	
           <label class="form">Nickname:</label><input class="form"type="text" id="login_name"><br>
-          <button id="button_login_login">Play!</button>
+          <button id="button_login" onclick="">Play!</button>
     </td></tr></table>
   </div>
 
@@ -246,8 +249,8 @@
     <table class="center-content"><tr><td>
           <label class="form">Room name:</label><input type="text" id="register_name" class="form"><br>
 
-          <button id="button_register_register">Create</button>
-          <button id="button_register_close">Cancel</button>
+          <button id="button_room_register">Create</button>
+          <button id="button_make_room_close">Cancel</button>
     </td></tr></table>
   </div>
 
