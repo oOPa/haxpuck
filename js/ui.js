@@ -7,13 +7,15 @@ createLobby();
 
 $("#button_login").click(function()
 {
-    console.log($("#login_name").val());
-    //login();
-    hide_box();
-    show_rooms();
-
-    //show_lobby();
-    
+    window.nickName = $("#login_name").val();
+    if(window.nickName.length > 0)
+    {
+        console.log($("#login_name").val());
+        //login();
+        hide_box();
+        show_rooms();
+        //show_lobby();
+    }
 });
 
 $("#btn_create_room").click(function(){
@@ -23,12 +25,21 @@ $("#btn_create_room").click(function(){
 $("#button_make_room_close").click(function(){
     hide_box();
 });
-
+$("showGameButton").click(()=>{
+    toggleLobby();
+});
 $("#button_room_register").click(function(){
+    var roomName =$("#register_name").val();
+    if(roomName.length > 0)
+    {
+
+    
     hide_box();
     $("#rooms").hide();
     show_lobby();
-    makeRoom();
+    makeRoom(roomName);
+
+    }
 });
 
     $("#chat_send").click(function(){
@@ -131,11 +142,17 @@ function attachPlayers()
     renderer.addPlayer(client.me);
 }
 
-var makeRoom = function()
+var makeRoom = function(room)
 {
     var renderer = new Renderer();
-    var host = new Host();
+    var host = new Host(window.nickName);
     renderer.setStadium(stadium);
+    renderer.addPlayer(host.getPlayer())
     Game.Input.addController(host.getPlayer());
     renderer.start();
+    host.on("brooker",(peer)=>{
+        Game.Net.makeRoom(room,peer);
+    });
+    Game.UI.createPlayer(window.nickName);
+    host.createRoom();
 }

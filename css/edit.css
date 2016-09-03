@@ -408,7 +408,7 @@ player {
 }
 #chat_log
 {
-    height: 24px;
+    height: 100%;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     background-color: #303030;

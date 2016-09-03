@@ -3,6 +3,7 @@ Game.Debug = {};
 Game.Input = {};
 Game.Rendering = {};
 Game.Net = {};
+Game.UI = {}
 Game.Debug.createDebugDraw = function(renderer)
 {
     var debugDraw = new b2DebugDraw();
@@ -59,7 +60,25 @@ Game.Rendering.addPlayers = function(client,renderer)
         renderer.addPlayer(p)
     }
 }
-Game.Net.makeRoom = function(host,renderer)
+Game.Net.makeRoom = function(name,peer)
+{
+    var max = 8;
+    $.post("/create_room",encodeURI("name="+name+"&peer="+peer+"&max="+max+"&ver="+hx.version));
+}
+Game.Net.getRooms = function()
+{
+    $.getJSON( "/get_rooms", function( data ) {
+        debugger;
+    })
+}
+Game.UI.makeRoom = function()
 {
 
+}
+Game.UI.createPlayer = function(name)
+{
+    var playerElement = document.createElement("ul")
+    playerElement.classList.add("ui-state-default")
+    playerElement.appendChild(document.createTextNode(name))
+    document.getElementById("spec_lobby_list").appendChild(playerElement);
 }

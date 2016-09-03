@@ -58,6 +58,9 @@
 		<td style="width:100%"><input id="input_name" value=""></input></td>
 		<td><button id="button_save" class="valid-user">Save</button></td>
 		<td><button id="button_download" class="valid-user">Download</button></td>
+		<td><button id="showGameButton" hidden>Show Game</button></td>
+		<td><button id="recordButton" hidden>Record</button></td>
+		<td><button id="leaveRoomButton" hidden>Leave Room</button></td>
 		<td><button id="button_properties">(Settings)Stadium&nbsp;Properties</button></td>
 		<td><button id="button_help">About</button></td>
 	    </tr></table>
@@ -99,10 +102,8 @@
 	<div class="prop_group_title">Red team</div>
 
 	<ul id="red_lobby_list" class="connectedSortable">
-		<li class="ui-state-default player">Player1 red</li>
-		<li class="ui-state-default player">Player1 red</li>
-		<li class="ui-state-default player">Player1 red</li>
-		<li class="ui-state-default player">Player1 red</li>
+
+
 
 	</ul>
 </div>
@@ -112,7 +113,7 @@
 	<div class="prop_group_title">Spectators</div>
 
 	<ul id="spec_lobby_list" class="connectedSortable">
-		<li class="ui-state-default player">Player1 spec</li>
+
 	</ul>
 </div>
 
@@ -122,7 +123,7 @@
 	<div class="prop_group_title">Blue team</div>
 
 	<ul id="blue_lobby_list" class="connectedSortable">
-		<li class="ui-state-default player">Player1 blue</li>
+
 	</ul>
 </div>
 </div>
@@ -230,14 +231,14 @@
   <div id="boxlogin" class="hidden">
     <table class="center-content"><tr><td>
 					<p class="">Enter nickname to get started</p><br>	
-          <label class="form">Nickname:</label><input class="form"type="text" id="login_name"><br>
+          <label class="form">Nickname:</label><input class="form" type="text" id="login_name"><br>
           <button id="button_login" onclick="">Play!</button>
     </td></tr></table>
   </div>
 
   <div id="boxregister" class="hidden">
     <table class="center-content"><tr><td>
-          <label class="form">Username:</label><input type="text" id="register_name" class="form"><br>
+          <label class="form">Username:</label><input type="text" id="register_name_old" class="form"><br>
           <label class="form">Password:</label><input type="text" id="register_password" class="form"><br>
           <label class="form">Email:</label><input type="text" id="register_email" class="form"><br>
           <button id="button_register_register">Register</button>

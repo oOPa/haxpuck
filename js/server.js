@@ -1,9 +1,9 @@
-var Host = function()
+var Host = function(nickname)
 {
 	this.clients = [];
 	this.methods = [];
 	this._createNetworkMethods();
-	this.me = new Player("host",0);
+	this.me = new Player(nickname,0);
 	this.ee = new EventEmitter();
 	this.count = 0;
 }
@@ -79,6 +79,7 @@ Host.prototype.createRoom = function()
 	{
 		console.log('My id is: ' + id);
 		console.log('waiting for players to join');
+		this.ee.emit("brooker",id);
 		this.peer.on('connection',this.initPlayer.bind(this));
 	}); 
 
